@@ -17,6 +17,14 @@ object SimpleCounter {
         mapForContext[name] = mapForContext.getOrElse(name) { 0 } + 1
     }
 
+    fun clear(context: Context = this.defaultContext) {
+        this.counts[context]?.clear()
+    }
+
+    fun clearAll() {
+        this.counts.clear()
+    }
+
     fun getCount(value: Any?, context: Context = this.defaultContext): Int {
         val name = value.toString()
         return this.getMapForContext(context).getOrElse(name) { 0 }
@@ -26,8 +34,11 @@ object SimpleCounter {
         val countList = this.getMapForContext(context)
             .toList()
             .sortedBy { it.second }
-        for ((name, count) in countList) {
-            println("$count: $name")
+        if (countList.isEmpty())
+            println("no counts")
+        else
+            for ((name, count) in countList) {
+                println("$count: $name")
         }
     }
 }
