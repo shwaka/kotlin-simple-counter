@@ -1,9 +1,12 @@
 plugins {
     kotlin("multiplatform") version "1.4.32"
+    id("io.kotest") version "0.2.6"
+    id("com.adarshr.test-logger") version "2.1.1"
+    `maven-publish`
 }
 
-group = "me.shun"
-version = "1.0-SNAPSHOT"
+group = "com.github.shwaka.counter"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -47,6 +50,12 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
+                // kotest
+                val version = "4.3.2"
+                implementation("io.kotest:kotest-runner-junit5:$version")
+                implementation("io.kotest:kotest-assertions-core:$version")
+                implementation("io.kotest:kotest-property:$version")
+                implementation("io.kotest:kotest-assertions-compiler:$version")
             }
         }
         val jsMain by getting
@@ -57,5 +66,25 @@ kotlin {
         }
         val nativeMain by getting
         val nativeTest by getting
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+testlogger {
+    theme = com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA
+    showCauses = true
+    showStandardStreams = true
+    // showFullStackTraces = true
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("../maven/repository")
+            name = "MyMaven"
+        }
     }
 }
