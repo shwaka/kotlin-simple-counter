@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.shwaka.counter"
-version = "0.1"
+version = "0.2"
 
 repositories {
     mavenCentral()
@@ -21,7 +21,7 @@ kotlin {
             useJUnit()
         }
     }
-    js(LEGACY) {
+    js(BOTH) {
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
@@ -37,7 +37,7 @@ kotlin {
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
-    
+
     sourceSets {
         val commonMain by getting
         val commonTest by getting {
